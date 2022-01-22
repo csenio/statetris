@@ -3,48 +3,25 @@
 	import { onMount } from 'svelte';
 
 	import { worldMap } from './countries.js';
-	import { countries } from './countryIso.js';
 	import { gameMachine } from '$lib/gameStore.js';
+	import FallingPiece from '$lib/FallingPiece.svelte';
 
-	const { state, send } = useMachine(gameMachine);
+	const { send } = useMachine(gameMachine);
 
 	let map;
 
-	function unique(arr) {
-		return [...new Set(arr)];
-	}
-
-	function findCountryContainer(el) {
-		if (!el.id) return findCountryContainer(el.parentElement);
-
-		if (!el || el.id === map) {
-			console.warn('DANGER, found the map container');
-			return;
-		}
-
-		let possibleISO = el.id.toUpperCase();
-		if (!countries[possibleISO]) {
-			return findCountryContainer(el.parentElement);
-		}
-
-		return {
-			element: el,
-			iso: possibleISO,
-		};
-	}
+	let currentCountry;
 
 	onMount(() => {
-		const pathRegions = map.querySelectorAll('path>title');
-		const gRegions = map.querySelectorAll('g>title');
+		const allCountries = map.querySelectorAll('[data-iso]');
 
-		// unique([...pathRegions, ...gRegions].map(findCountryContainer));
+		currentCountry = [...allCountries][0];
 
-		send('INIT_GAME');
-
-		// ISO.forEach((country) => country.element.classList.add('land-highlight'));
+		send('INIT_GAME', {
+			availablePieces: [],
+			grid_size: [],
+		});
 	});
-
-	// let countries;
 </script>
 
 <svg
@@ -54,7 +31,12 @@
 	version="1.1"
 	viewbox="0 0 2754 1398"
 >
-	{@html worldMap}
+	<g>
+		{@html worldMap}
+	</g>
+	{#if currentCountry}
+		<FallingPiece country={currentCountry} />
+	{/if}
 </svg>
 
 <style>
