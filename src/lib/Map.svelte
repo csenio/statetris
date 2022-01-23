@@ -44,7 +44,7 @@
 		{@html worldMap}
 	</g>
 	{#if $state.context.currentPiece?.element}
-		<FallingPiece data={$state.context.currentPiece} coordinates={$state.context.coordinates} />
+		<FallingPiece data={$state.context.currentPiece} transform={$state.context.transform} />
 	{/if}
 </svg>
 

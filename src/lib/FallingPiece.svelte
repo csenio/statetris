@@ -1,6 +1,6 @@
 <script>
 	export let data
-	export let coordinates
+	export let transform
 
 	$: country = data.element
 
@@ -8,9 +8,9 @@
 
 	$: html = country.outerHTML
 
-	$: console.log(coordinates[1])
+	// $: console.log(transform[1])
 
-	$: [x, y] = coordinates
+	$: [x, y] = transform
 </script>
 
 <g class="land-highlight" transform="translate({x} {y})" bind:this={container}>

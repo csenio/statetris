@@ -15,7 +15,7 @@ const playingMachine = {
 				{cond: 'isPieceColliding', target: 'selecting_piece'},
 				{cond: 'isPieceOutOfBounds', target: 'selecting_piece'},
 			],
-			// after: {500: {actions: 'movePieceDown', target: 'piece_falling'}},
+			after: {500: {actions: 'movePieceDown', target: 'piece_falling'}},
 			on: {MOVE_LEFT: {actions: 'movePieceLeft'}, MOVE_RIGHT: {actions: 'movePieceRight'}},
 		},
 		game_over: {
@@ -34,7 +34,7 @@ export const gameMachine = createMachine(
 			finishedPieces: [],
 			// the currently selected country
 			currentPiece: null,
-			coordinates: [0, 0],
+			transform: [0, 0],
 			/* imagine dividing the map into a grid of squares, 
     this would be the size of one square. 
     E.G the distance a piece travels to the left / right / down per "tick" */
@@ -74,7 +74,7 @@ export const gameMachine = createMachine(
 
 				return {
 					currentPiece: {element, bbox},
-					coordinates: [0, transform],
+					transform: [0, transform],
 				}
 			}),
 
@@ -90,19 +90,22 @@ export const gameMachine = createMachine(
 
 			// move piece
 			movePieceDown: assign({
-				coordinates: (ctx) => [ctx.coordinates[0], ctx.coordinates[1] + ctx.gridSize],
+				transform: (ctx) => [ctx.transform[0], ctx.transform[1] + ctx.gridSize],
 			}),
 			movePieceLeft: assign({
-				coordinates: (ctx) => [ctx.coordinates[0] - ctx.gridSize, ctx.coordinates[1]],
+				transform: (ctx) => [ctx.transform[0] - ctx.gridSize, ctx.transform[1]],
 			}),
 			movePieceRight: assign({
-				coordinates: (ctx) => [ctx.coordinates[0] + ctx.gridSize, ctx.coordinates[1]],
+				transform: (ctx) => [ctx.transform[0] + ctx.gridSize, ctx.transform[1]],
 			}),
 		},
 		guards: {
-			isPieceInPlace: (ctx) => Math.abs(ctx.coordinates[0]) < 1 && Math.abs(ctx.coordinates[1]) < 1, // cant check if equal 0 thanks to floating point
+			isPieceInPlace: (ctx) => Math.abs(ctx.transform[0]) < 1 && Math.abs(ctx.transform[1]) < 1, // cant check if equal 0 thanks to floating point
 			isPieceColliding: () => false,
-			isPieceOutOfBounds: () => false,
+			isPieceOutOfBounds: (ctx) => {
+				const totalOffsetToTop = ctx.transform[1] + ctx.currentPiece.bbox.y
+				return totalOffsetToTop > ctx.gridDimensions.height
+			},
 			isNoPieceLeft: () => false,
 		},
 	},

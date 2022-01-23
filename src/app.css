@@ -247,18 +247,29 @@ button:focus:not(:focus-visible) {
 	 */
 
 body {
-	--indigoA1: hsl(240 92.6% 26.5% / 0.008);
-	--indigoA2: hsl(223 100% 51% / 0.028);
-	--indigoA3: hsl(224 100% 50.1% / 0.059);
-	--indigoA4: hsl(223 98% 48.5% / 0.099);
-	--indigoA5: hsl(225 98.6% 46.4% / 0.15);
-	--indigoA6: hsl(224 99.5% 44.9% / 0.224);
-	--indigoA7: hsl(225 99.7% 43.9% / 0.318);
-	--indigoA8: hsl(226 99.5% 43.1% / 0.448);
 	--indigoA9: hsl(226 100% 41.2% / 0.757);
-	--indigoA10: hsl(226 99.8% 37.1% / 0.773);
-	--indigoA11: hsl(226 99.6% 31.1% / 0.797);
-	--indigoA12: hsl(226 99.3% 11.4% / 0.938);
+
+	--tomato9: hsl(10 78% 54%);
+
+	--redA9: hsl(358 99.9% 42.9% / 0.718);
+
+	--crimsonA9: hsl(336 99.9% 44.3% / 0.761);
+
+	--pinkA9: hsl(322 99.7% 39.3%);
+	--plumA9: hsl(292 99.9% 31%);
+	--purpleA9: hsl(272 99.6% 34%);
+	--violetA9: hsl(252 99.9% 35.8%);
+	--blueA9: hsl(206 100% 50%);
+	--cyanA9: hsl(190 100% 37.8%);
+	--tealA9: hsl(173 99.8% 31.1%);
+	--green9: hsl(151 55% 41.5%);
+	--grass9: hsl(131 41% 46.5%);
+	--orange9: hsl(24 94% 50%);
+	--brown9: hsl(28 34% 51%);
+	--sky9: hsl(193 98% 70%);
+	--mint9: hsl(167 65% 66%);
+	--yellow10: hsl(50 100% 48.5%);
+	--amber8: hsl(35 85.2% 55.1%);
 }
 
 .land-highlight,
