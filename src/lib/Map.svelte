@@ -1,28 +1,37 @@
 <script>
-	import { useMachine } from '@xstate/svelte';
-	import { onMount } from 'svelte';
+	import {useMachine} from '@xstate/svelte'
+	import {onMount} from 'svelte'
 
-	import { worldMap } from './countries.js';
-	import { gameMachine } from '$lib/gameStore.js';
-	import FallingPiece from '$lib/FallingPiece.svelte';
+	import {worldMap} from './countries.js'
+	import {gameMachine} from '$lib/gameStore.js'
+	import FallingPiece from '$lib/FallingPiece.svelte'
 
-	const { send } = useMachine(gameMachine);
+	const {state, send} = useMachine(gameMachine)
 
-	let map;
-
-	let currentCountry;
+	let map
 
 	onMount(() => {
-		const allCountries = map.querySelectorAll('[data-iso]');
+		const allCountries = map.querySelectorAll('[data-iso]')
 
-		currentCountry = [...allCountries][0];
+		const gridDimensions = {width: 2754, height: 1398}
 
 		send('INIT_GAME', {
-			availablePieces: [],
-			grid_size: [],
-		});
-	});
+			availablePieces: [...allCountries].map((c) => ({element: c})),
+			gridDimensions,
+		})
+	})
+
+	function handleKeyDown(e) {
+		if (e.key === 'ArrowLeft' || e.key === 'a') {
+			send('MOVE_LEFT')
+		}
+		if (e.key === 'ArrowRight' || e.key === 'd') {
+			send('MOVE_RIGHT')
+		}
+	}
 </script>
+
+<svelte:window on:keydown={handleKeyDown} />
 
 <svg
 	bind:this={map}
@@ -34,8 +43,8 @@
 	<g>
 		{@html worldMap}
 	</g>
-	{#if currentCountry}
-		<FallingPiece country={currentCountry} />
+	{#if $state.context.currentPiece?.element}
+		<FallingPiece data={$state.context.currentPiece} coordinates={$state.context.coordinates} />
 	{/if}
 </svg>
 

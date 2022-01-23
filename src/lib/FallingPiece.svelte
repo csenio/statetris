@@ -1,16 +1,18 @@
 <script>
-	import { onMount } from 'svelte';
+	export let data
+	export let coordinates
 
-	export let country;
+	$: country = data.element
 
-	let container;
+	let container
 
-	onMount(() => {
-		container.appendChild(country.cloneNode(true));
-	});
+	$: html = country.outerHTML
 
-	// copy element data but with location at 0 0
-	const { x, y } = country.getBBox();
+	$: console.log(coordinates[1])
+
+	$: [x, y] = coordinates
 </script>
 
-<g class="land-highlight" transform="translate(0 -{y})" bind:this={container} />
+<g class="land-highlight" transform="translate({x} {y})" bind:this={container}>
+	{@html html}
+</g>
